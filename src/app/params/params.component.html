@@ -1,1 +1,52 @@
-<p>params works!</p>
+<div>
+    <div class="content">
+        <h1>Dataset</h1>
+        <p>Before we begin, we need to know about your dataset. Please fill out the following details:</p>
+        
+        <form [formGroup]="paramsForm" (ngSubmit)="onSubmit()">
+            <div style="display: flex;">
+                <div style="flex: 1; padding: 10px;">
+                    <h3>Train Data</h3>
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label for="train_metadata">Metadata URL in S3</mat-label>
+                            <input matInput id="train_metadata" type="text" formControlName="train_metadata">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label for="train_multimedia">Multimedia URL in S3</mat-label>
+                            <input matInput id="train_multimedia" type="text" formControlName="train_multimedia">
+                        </mat-form-field>
+                    </div>
+                </div>
+            
+                <div style="flex: 1; padding: 10px;">
+                    <h3>Test Data</h3>
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label for="test_metadata">Metadata URL in S3</mat-label>
+                            <input matInput id="test_metadata" type="text" formControlName="test_metadata">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label for="test_multimedia">Multimedia URL in S3</mat-label>
+                            <input matInput id="test_multimedia" type="text" formControlName="test_multimedia">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <button mat-raised-button color="accent" [disabled]="!paramsForm.valid" type="submit">Submit</button>
+    </div>
+    <div class="footer">
+        <span class="next-btn">
+            <button mat-raised-button routerLink="/code" color="primary">Next</button>
+        </span>
+        <span class="prev-btn">
+            <button mat-raised-button routerLink="/landing" color="basic">Prev</button>
+        </span>
+    </div>
+</div>
