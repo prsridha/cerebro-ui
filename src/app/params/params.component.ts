@@ -8,7 +8,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 
 export class ParamsComponent {
-  constructor(private params: FormBuilder) {}
+  // constructor(private params: FormBuilder) {}
   
   paramsForm: FormGroup = new FormGroup({
     train_metadata: new FormControl(''),
@@ -17,8 +17,7 @@ export class ParamsComponent {
     test_multimedia: new FormControl('')
   });
 
-  onSubmit(){
-    alert("YAAAYYY");
+  submitFn(){
     console.log(this.paramsForm.value);
   }
 

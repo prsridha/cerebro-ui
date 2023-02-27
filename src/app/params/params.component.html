@@ -3,7 +3,7 @@
         <h1>Dataset</h1>
         <p>Before we begin, we need to know about your dataset. Please fill out the following details:</p>
         
-        <form [formGroup]="paramsForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="paramsForm">
             <div style="display: flex;">
                 <div style="flex: 1; padding: 10px;">
                     <h3>Train Data</h3>
@@ -39,7 +39,7 @@
             </div>
         </form>
 
-        <button mat-raised-button color="accent" [disabled]="!paramsForm.valid" type="submit">Submit</button>
+        <button mat-raised-button color="accent" (click)="submitFn()" type="submit">Submit</button>
     </div>
     <div class="footer">
         <span class="next-btn">
