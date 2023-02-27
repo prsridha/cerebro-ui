@@ -14,7 +14,8 @@ export class ParamsComponent {
     train_metadata: new FormControl(''),
     train_multimedia: new FormControl(''),
     test_metadata: new FormControl(''),
-    test_multimedia: new FormControl('')
+    test_multimedia: new FormControl(''),
+    misc_url: new FormControl('')
   });
 
   submitFn(){

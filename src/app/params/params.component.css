@@ -13,3 +13,24 @@
 .prev-btn {
     float: left;
 }
+.columns {
+    display: flex;
+}
+.inside-columns {
+    flex: 1;
+    padding: 10px;
+}
+.submit-btn {
+    position: relative;
+    margin-top: 30%;
+    padding-left: 34%;
+}
+.form-region {
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+}
+.label-text {
+    font-size: small;
+}
