@@ -17,6 +17,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ParamsComponent } from './params/params.component';
 import { CodeComponent } from './code/code.component';
 import { LandingComponent } from './landing/landing.component';
+import { DashboardsComponent } from './dashboards/dashboards.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LandingComponent } from './landing/landing.component';
     ToolbarComponent,
     ParamsComponent,
     CodeComponent,
-    LandingComponent
+    LandingComponent,
+    DashboardsComponent
   ],
   imports: [
     BrowserModule,
