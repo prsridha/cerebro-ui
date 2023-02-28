@@ -22,6 +22,39 @@ def saveFile(request, filename, relativePath):
     }
     return resp
 
+def copyFilesToPods():
+    valuesYaml = utilities.readValuesYAML()
+    codeFromPath = os.path.join(utilities.ROOT_PATH, "code")
+    codeToPath = valuesYaml["controller"]["volumes"]["userRepoMountPath"]
+    paramsFromPath = os.path.join(utilities.ROOT_PATH, "params.json")
+    paramsToPath = valuesYaml["controller"]["volumes"]["dataMountPath"]
+
+    p = utilities.getPodNames()
+    controller_pod, etl_pods, mop_pods = p["controller"], p["etl_workers"], p["mop_workers"]
+    cmd1 = "kubectl exec -t {} -c {} -- bash -c 'rm -rf {}/*' "
+    cmd2 = "kubectl cp -c {} {} {}:{}"
+    cmd3 = "kubectl exec -t {} -c {} -- bash -c 'mv {}/code/* {}' "
+    cmd4 = "kubectl exec -t {} -c {} -- bash -c 'rm -rf {}/code' "
+
+    # remove existing files in codeToPath
+    # controller
+    utilities.run(cmd1.format(controller_pod, "cerebro-controller-container", codeToPath))
+    for pod in etl_pods:
+        utilities.run(cmd1.format(pod, "cerebro-worker-etl-container", codeToPath))
+    
+    # copy to pods
+    utilities.run(cmd2.format("cerebro-controller-container", paramsFromPath, controller_pod, paramsToPath))
+    utilities.run(cmd2.format("cerebro-controller-container", codeFromPath, controller_pod, codeToPath))
+    for pod in etl_pods:
+        utilities.run(cmd2.format("cerebro-worker-etl-container", codeFromPath, pod, codeToPath))
+
+    # move and delete extra dir
+    utilities.run(cmd3.format(controller_pod, "cerebro-controller-container", codeToPath, codeToPath))
+    utilities.run(cmd4.format(controller_pod, "cerebro-controller-container", codeToPath))
+    for pod in etl_pods:
+        utilities.run(cmd3.format(pod, "cerebro-worker-etl-container", codeToPath, codeToPath))
+        utilities.run(cmd4.format(pod, "cerebro-worker-etl-container", codeToPath))
+
 @app.route("/initialize", methods=["POST"])
 def initialize():
     filename = "values.yaml"
@@ -61,14 +94,6 @@ def saveCode():
     cmd = "rm {}".format(os.path.join(utilities.ROOT_PATH, "code.zip"))
     utilities.run(cmd)
     
-    resp = {
-        "message": "Extracted and saved code zip file",
-        "status": 200
-    }
-    return resp
-
-@app.route("/copy-files-pods", methods=["GET"])
-def copyFilesToPods():
     valuesYaml = utilities.readValuesYAML()
     codeFromPath = os.path.join(utilities.ROOT_PATH, "code")
     codeToPath = valuesYaml["controller"]["volumes"]["userRepoMountPath"]
@@ -101,11 +126,12 @@ def copyFilesToPods():
         utilities.run(cmd3.format(pod, "cerebro-worker-etl-container", codeToPath, codeToPath))
         utilities.run(cmd4.format(pod, "cerebro-worker-etl-container", codeToPath))
 
+    copyFilesToPods()
+
     resp = {
         "message": "Extracted and saved code zip file",
         "status": 200
     }
-    return resp
 
 @app.route("/get-urls", methods=["GET"])
 def getURLs():
