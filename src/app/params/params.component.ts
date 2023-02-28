@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
-import { catchError, retry } from 'rxjs/operators';
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 interface ParamsDict {
   train_metadata: string
@@ -26,7 +26,10 @@ const httpOptions = {
 export class ParamsComponent {
   params = <ParamsDict>{}
   baseURL = "http://localhost:8080";
-  constructor(private httpClient: HttpClient){}
+  constructor(
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar
+    ){}
   
   paramsForm: FormGroup = new FormGroup({
     train_metadata: new FormControl(''),
@@ -43,9 +46,17 @@ export class ParamsComponent {
     this.params.test_multimedia = this.paramsForm.value.test_multimedia;
     this.params.misc_url = [this.paramsForm.value.misc_url];
     
-    this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe(data => {
-      console.log(data);
+    this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe((data: any) => {
+      if (data.status == 200)
+      {
+        this.snackBar.open('Sent parameters to server!', 'Dismiss', {
+          duration: 3000
+        });
+      } else {
+        this.snackBar.open('Error occured', 'Dismiss', {
+          duration: 3000
+        });
+      }
     });
   }
-
 }
