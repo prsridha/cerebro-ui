@@ -46,10 +46,14 @@ export class ParamsComponent {
   });
 
   submitFn(){
-    this.params.train.metadata_url = this.paramsForm.value.train_metadata;
-    this.params.train.multimedia_url = this.paramsForm.value.train_multimedia;
-    this.params.test.metadata_url = this.paramsForm.value.test_metadata;
-    this.params.test.multimedia_url = this.paramsForm.value.test_multimedia;
+    this.params.train = {
+      metadata_url: this.paramsForm.value.train_metadata,
+      multimedia_url: this.paramsForm.value.train_multimedia
+    }
+    this.params.test = {
+      metadata_url: this.paramsForm.value.test_metadata,
+      multimedia_url: this.paramsForm.value.test_multimedia
+    }
     this.params.miscellaneous = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
     
     this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe((data: any) => {
