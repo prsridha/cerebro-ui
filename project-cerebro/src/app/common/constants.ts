@@ -1,3 +1,3 @@
 export class GlobalConstants {
-    public static backendURL: string = "http://webbackendsvc.cerebro.svc.cluster.local:8080";
+    public static backendURL: string = "http://localhost:8080/";
 }
