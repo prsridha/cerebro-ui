@@ -138,13 +138,6 @@ def getURLs():
     valuesYaml = utilities.readValuesYAML()
     publicDNS = valuesYaml["cluster"]["networking"]["publicDNSName"]
     
-    # get grafana port
-    # name = "prom-grafana"
-    # ns = "prom-metrics"
-    # svc = v1.read_namespaced_service(namespace=ns, name=name)
-    # grafanaP = svc.spec.ports[0].node_port
-    grafanaP = "0000"
-    
     # get jupyter string
     j = valuesYaml["creds"]["jupyterTokenSting"]
     j_bin = j.encode("utf-8")
@@ -154,7 +147,8 @@ def getURLs():
     tensorboardP = valuesYaml["controller"]["services"]["tensorboardNodePort"]
     prometheusP = valuesYaml["cluster"]["networking"]["prometheusNodePort"]
     lokiP = valuesYaml["cluster"]["networking"]["lokiPort"]
-    
+    grafanaP = valuesYaml["cluster"]["networking"]["grafanaNodePort"]
+
     jupyterURL = "http://" + publicDNS + ":" + str(jupyterP) + "/?token=" + jToken
     tensorboardURL = "http://" + publicDNS + ":" + str(tensorboardP)
     prometheusURL = "http://" + publicDNS + ":" + str(prometheusP)
