@@ -5,11 +5,15 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { environment } from '../../environments/environment';
 
 interface ParamsDict {
-  train_metadata: string
-  train_multimedia: string
-  test_metadata: string
-  test_multimedia: string
-  misc_url: [string, string]
+  train: {
+    metadata_url: string,
+    multimedia_url: string
+  }
+  test: {
+    metadata_url: string,
+    multimedia_url: string
+  }
+  miscellaneous: [string, string]
 }
 
 const httpOptions = {
@@ -42,11 +46,11 @@ export class ParamsComponent {
   });
 
   submitFn(){
-    this.params.train_metadata = this.paramsForm.value.train_metadata;
-    this.params.train_multimedia = this.paramsForm.value.train_multimedia;
-    this.params.test_metadata = this.paramsForm.value.test_metadata;
-    this.params.test_multimedia = this.paramsForm.value.test_multimedia;
-    this.params.misc_url = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
+    this.params.train.metadata_url = this.paramsForm.value.train_metadata;
+    this.params.train.multimedia_url = this.paramsForm.value.train_multimedia;
+    this.params.test.metadata_url = this.paramsForm.value.test_metadata;
+    this.params.test.multimedia_url = this.paramsForm.value.test_multimedia;
+    this.params.miscellaneous = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
     
     this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe((data: any) => {
       if (data.status == 200)
