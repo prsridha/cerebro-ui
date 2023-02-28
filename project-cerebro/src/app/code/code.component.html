@@ -8,7 +8,7 @@
                 <span class="inpt-spn">
                     <button mat-raised-button color="primary" (click)="fileInput.click()">
                         Choose File
-                        <input #fileInput type="file" formControlName="fileSource" (change)="onFileChange($event)" style="display:none;" />
+                        <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" />
                     </button>
                     </span>
                 <span class="btn-spn"><button mat-raised-button color="accent" (click)="submit()">Upload</button></span>

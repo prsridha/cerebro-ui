@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-code',
@@ -10,6 +11,7 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./code.component.css']
 })
 export class CodeComponent {
+  selectedFile = "";
   fileForm = new FormGroup({
     file: new FormControl(''),
     fileSource: new FormControl('')
@@ -22,21 +24,14 @@ export class CodeComponent {
 
   onFileChange(event:any) {
     if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.fileForm.patchValue({
-        fileSource: file
-      });
+      this.selectedFile = event.target.files[0];
     }
   }
 
-  get f(){
-    return this.fileForm.controls;
-  }
-
-  submit(){
+  submit() {
     const baseURL = environment.backendURL;
     const formData = new FormData();
-    formData.append('file', this.fileForm.get('fileSource')!.value!);
+    formData.append('file', this.selectedFile);
     this.httpClient.post(baseURL + "/save-code", formData).subscribe((data:any) => {
         if (data.status == 200)
         {
