@@ -29,7 +29,7 @@ elif [ "$POD_TYPE" == "webapp_ui" ]; then
     export const environment = {
         backendURL: 'http://$BACKEND_HOST:30083'
     };
-    " > /webapp/cerebro-ui/project-cerebro/src/environments/environment.ts
+    " | tee /webapp/cerebro-ui/project-cerebro/src/environments/environment.ts /webapp/cerebro-ui/project-cerebro/src/environments/environment.development.ts
 
     (cd /webapp/cerebro-ui/project-cerebro && npm install)
     # (export NG_CLI_ANALYTICS="false" && cd /webapp/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
