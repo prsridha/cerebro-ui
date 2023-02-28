@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 interface DashboardURLs {
   grafanaURL: string;
@@ -18,7 +19,7 @@ export class DashboardsComponent implements OnInit{
   urls = <DashboardURLs> {};
 
   ngOnInit() {
-    var baseURL = "http://localhost:8080";
+    const baseURL = environment.backendURL;
     
     this.httpClient.get(baseURL + '/get-urls').subscribe((res: any)=>{
       this.urls.grafanaURL = res.message["grafanaURL"];

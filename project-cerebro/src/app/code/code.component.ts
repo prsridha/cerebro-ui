@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-code',
@@ -33,10 +34,10 @@ export class CodeComponent {
   }
 
   submit(){
-    const url = "http://localhost:8080"
+    const baseURL = environment.backendURL;
     const formData = new FormData();
     formData.append('file', this.fileForm.get('fileSource')!.value!);
-    this.httpClient.post(url + "/save-code", formData).subscribe((data:any) => {
+    this.httpClient.post(baseURL + "/save-code", formData).subscribe((data:any) => {
         if (data.status == 200)
         {
           this.snackBar.open('Uploaded code files to server!', 'Dismiss', {
