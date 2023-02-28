@@ -9,21 +9,21 @@
 
     <div class="dshbrd-btn-container">
         <span class="dshbrd-btn">
-            <button mat-raised-button color="accent">
-                <mat-icon>mic</mat-icon>
-                Start Recording
+            <button mat-raised-button color="accent" (click) = "goToLink(this.urls.jupyterURL)">
+                <mat-icon>code</mat-icon>
+                Jupyter Notebook
             </button>
         </span>
         <span class="dshbrd-btn">
-            <button mat-raised-button color="accent">
-                <mat-icon>mic</mat-icon>
-                Start Recording
+            <button mat-raised-button color="accent" (click) = "goToLink(this.urls.tensorboardURL)">
+                <mat-icon>trending_up</mat-icon>
+                Tensorboard Dashboard
             </button>
         </span>
         <span class="dshbrd-btn">
-            <button mat-raised-button color="accent">
-                <mat-icon>mic</mat-icon>
-                Start Recording
+            <button mat-raised-button color="accent" (click) = "goToLink(this.urls.grafanaURL)">
+                <mat-icon>dashboard</mat-icon>
+                Grafana Dashboard
             </button>
         </span>
     </div>
