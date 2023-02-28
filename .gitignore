@@ -1,5 +1,6 @@
 .DS_STORE
 
+project-cerebro/.angular
 project-cerebro/dist/
 project-cerebro/bazel-out
 project-cerebro/integration/bazel/bazel-*
