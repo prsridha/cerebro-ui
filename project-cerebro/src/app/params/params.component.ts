@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from "@angular/material/snack-bar";
+import{ GlobalConstants } from '../common/constants';
 
 interface ParamsDict {
   train_metadata: string
@@ -25,7 +26,7 @@ const httpOptions = {
 
 export class ParamsComponent {
   params = <ParamsDict>{}
-  baseURL = "http://localhost:8080";
+  baseURL = GlobalConstants.backendURL;
   constructor(
     private httpClient: HttpClient,
     private snackBar: MatSnackBar
