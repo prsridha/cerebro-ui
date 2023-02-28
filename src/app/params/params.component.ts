@@ -1,5 +1,21 @@
 import { Component } from '@angular/core';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup } from '@angular/forms';
+import { catchError, retry } from 'rxjs/operators';
+
+interface ParamsDict {
+  train_metadata: string
+  train_multimedia: string
+  test_metadata: string
+  test_multimedia: string
+  misc_url: [string]
+}
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+  })
+}
 
 @Component({
   selector: 'app-params',
@@ -8,7 +24,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 
 export class ParamsComponent {
-  // constructor(private params: FormBuilder) {}
+  params = <ParamsDict>{}
+  baseURL = "http://localhost:8080";
+  constructor(private httpClient: HttpClient){}
   
   paramsForm: FormGroup = new FormGroup({
     train_metadata: new FormControl(''),
@@ -19,7 +37,15 @@ export class ParamsComponent {
   });
 
   submitFn(){
-    console.log(this.paramsForm.value);
+    this.params.train_metadata = this.paramsForm.value.train_metadata;
+    this.params.train_multimedia = this.paramsForm.value.train_multimedia;
+    this.params.test_metadata = this.paramsForm.value.test_metadata;
+    this.params.test_multimedia = this.paramsForm.value.test_multimedia;
+    this.params.misc_url = [this.paramsForm.value.misc_url];
+    
+    this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe(data => {
+      console.log(data);
+    });
   }
 
 }
