@@ -26,6 +26,6 @@ if [ "$POD_TYPE" == "webapp_backend" ]; then
     sleep infinity
 elif [ "$POD_TYPE" == "webapp_ui" ]; then
     (cd /webapp/cerebro-ui/project-cerebro && npm install)
-    # (export NG_CLI_ANALYTICS="false" && cd /webapp/cerebro-ui/project-cerebro && ng serve )
+    # (export NG_CLI_ANALYTICS="false" && cd /webapp/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80)
     sleep infinity
 fi
