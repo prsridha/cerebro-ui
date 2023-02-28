@@ -19,3 +19,7 @@
 .message {
     padding-top: 7%;
 }
+.spinner {
+    display: flex;
+    justify-content: center;
+}

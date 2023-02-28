@@ -19,6 +19,9 @@
     <h3 class="message">The expected file format is zip. Be sure to compress your code files such that when extracted, no additional directories are created.</h3>
 
     <div class="footer">
+        <div class="spinner">
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </div>
         <span class="next-btn">
             <button mat-raised-button routerLink="/dashboards" color="primary">Next</button>
         </span>

@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class CodeComponent {
   selectedFile = "";
+  loading = false;
   fileForm = new FormGroup({
     file: new FormControl(''),
     fileSource: new FormControl('')
@@ -31,14 +32,17 @@ export class CodeComponent {
   submit() {
     const baseURL = environment.backendURL;
     const formData = new FormData();
+    this.loading = true;
     formData.append('file', this.selectedFile);
     this.httpClient.post(baseURL + "/save-code", formData).subscribe((data:any) => {
         if (data.status == 200)
         {
+          this.loading = false;
           this.snackBar.open('Uploaded code files to server!', 'Dismiss', {
             duration: 3000
           });
         } else {
+          this.loading = false;
           this.snackBar.open('Error occured', 'Dismiss', {
             duration: 3000
           });
