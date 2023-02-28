@@ -4,20 +4,14 @@
         <h3>Next, you need to upload the code containing any auxillary files you might need to run your models. You will be providing the data processing function, train function and test function at a later step:</h3>
 
         <div class="form-region">
-            <form [formGroup]="fileForm" (ngSubmit)="submit()">
+            <form [formGroup]="fileForm">
                 <span class="inpt-spn">
                     <button mat-raised-button color="primary" (click)="fileInput.click()">
                         Choose File
                         <input #fileInput type="file" formControlName="fileSource" (change)="onFileChange($event)" style="display:none;" />
                     </button>
-                    <!-- <input matInput
-                        formControlName="file"
-                        id="code"
-                        type="file" 
-                        formControlName="fileSource"
-                        (change)="onFileChange($event)"> -->
                     </span>
-                <span class="btn-spn"><button mat-raised-button color="accent" type="submit">Upload</button></span>
+                <span class="btn-spn"><button mat-raised-button color="accent" (click)="submit()">Upload</button></span>
             </form>
         </div>
     </div>

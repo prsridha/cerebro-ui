@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-code',
@@ -13,7 +14,10 @@ export class CodeComponent {
     fileSource: new FormControl('')
   });
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private snackBar: MatSnackBar
+  ) { }
 
   onFileChange(event:any) {
     if (event.target.files.length > 0) {
@@ -29,12 +33,20 @@ export class CodeComponent {
   }
 
   submit(){
+    const url = "http://localhost:8080"
     const formData = new FormData();
     formData.append('file', this.fileForm.get('fileSource')!.value!);
-    this.http.post('http://localhost:8001/upload.php', formData)
-      .subscribe(res => {
-        console.log(res);
-        alert('Uploaded Successfully.');
+    this.httpClient.post(url + "/save-code", formData).subscribe((data:any) => {
+        if (data.status == 200)
+        {
+          this.snackBar.open('Uploaded code files to server!', 'Dismiss', {
+            duration: 3000
+          });
+        } else {
+          this.snackBar.open('Error occured', 'Dismiss', {
+            duration: 3000
+          });
+        }
       })
   }
 }
