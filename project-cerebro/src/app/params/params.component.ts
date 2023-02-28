@@ -13,6 +13,10 @@ interface ParamsDict {
     metadata_url: string,
     multimedia_url: string
   }
+  test: {
+    metadata_url: string,
+    multimedia_url: string
+  }
   miscellaneous: [string, string]
 }
 
@@ -41,6 +45,8 @@ export class ParamsComponent {
     train_multimedia: new FormControl(''),
     valid_metadata: new FormControl(''),
     valid_multimedia: new FormControl(''),
+    test_metadata: new FormControl(''),
+    test_multimedia: new FormControl(''),
     misc_url1: new FormControl(''),
     misc_url2: new FormControl('')
   });
@@ -53,6 +59,10 @@ export class ParamsComponent {
     this.params.valid = {
       metadata_url: this.paramsForm.value.valid_metadata,
       multimedia_url: this.paramsForm.value.valid_multimedia
+    }
+    this.params.test = {
+      metadata_url: this.paramsForm.value.test_metadata,
+      multimedia_url: this.paramsForm.value.test_multimedia
     }
     this.params.miscellaneous = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
     
