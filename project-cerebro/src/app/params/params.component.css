@@ -22,8 +22,8 @@
 }
 .submit-btn {
     position: relative;
-    margin-top: 50%;
-    /* padding-right: 20%; */
+    float: right;
+    top: 35%
 }
 .form-region {
     position: relative;
