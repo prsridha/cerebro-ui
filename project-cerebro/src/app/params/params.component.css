@@ -34,3 +34,6 @@
 .label-text {
     font-size: small;
 }
+mat-form-field {
+    width: 100%;
+}
