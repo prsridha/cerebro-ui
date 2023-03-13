@@ -4,9 +4,12 @@ import time
 import zipfile
 import utilities
 from pathlib import Path
+from urllib.parse import urlparse
 from flask import Flask, request
 from kubernetes import client, config
 from flask_cors import CORS
+
+REGION = "ca-central-1"
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -55,6 +58,26 @@ def copyFilesToPods():
         utilities.run(cmd3.format(pod, "cerebro-worker-etl-container", codeToPath, codeToPath))
         utilities.run(cmd4.format(pod, "cerebro-worker-etl-container", codeToPath))
 
+def add_s3_creds(s3_url):
+    bucket_name = urlparse(s3_url, allow_fragments=False).netloc
+    print("Got S3 bucket name:", bucket_name)
+
+    with open("misc/iam-policy-eks-s3.json", "r+") as f:
+        policy = f.read()
+        policy = policy.replace("<s3Bucket>", bucket_name)
+
+        f.seek(0)
+        f.write(policy)
+        f.truncate()
+
+    cmd = """aws iam create-policy \
+            --policy-name AmazonEKS_S3_Policy \
+            --policy-document file://misc/iam-policy-eks-s3.json
+            --region {}
+        """.format(REGION)
+    utilities.run(cmd)
+    print("Created IAM read-only policy for S3")
+
 @app.route("/initialize", methods=["POST"])
 def initialize():
     filename = "values.yaml"
@@ -69,6 +92,9 @@ def saveParams():
     
     with open(path, "w") as f:
         json.dump(params, f, indent=2)
+
+    s3_url = params["train"]["metadata_url"]
+    add_s3_creds(s3_url)
         
     resp = {
         "message": "Saved params json file",
