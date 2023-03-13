@@ -80,8 +80,8 @@ def add_s3_creds(s3_url):
         version = "v" + str(i)
         try:
             utilities.run(cmd.format(S3_POLICY_ARN, version))
-        except:
-            pass
+        except Exception as e:
+            print("GOT", e)
     print("Deleted existing policy versions")
 
     # create new policy version for new S3
