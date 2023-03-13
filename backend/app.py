@@ -9,7 +9,7 @@ from flask import Flask, request
 from kubernetes import client, config
 from flask_cors import CORS
 
-REGION = "ca-central-1"
+S3_POLICY_ARN = "arn:aws:iam::782408612084:policy/AmazonEKS_S3_Policy"
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -70,11 +70,11 @@ def add_s3_creds(s3_url):
         f.write(policy)
         f.truncate()
 
-    cmd = """aws iam create-policy \
-            --policy-name AmazonEKS_S3_Policy \
-            --policy-document file://misc/iam-policy-eks-s3.json
-            --region {}
-        """.format(REGION)
+    cmd = """aws iam create-policy-version \
+            --policy-arn {} \
+            --policy-document file://misc/iam-policy-eks-s3.json  \
+            --set-as-default
+        """.format(S3_POLICY_ARN)
     utilities.run(cmd)
     print("Created IAM read-only policy for S3")
 
