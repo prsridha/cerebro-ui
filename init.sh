@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# update apt for future package installs
+apt update
+
 mkdir $HOME/.ssh
 cp /etc/git-secret/* $HOME/.ssh/
 mv $HOME/.ssh/ssh $HOME/.ssh/id_rsa.git

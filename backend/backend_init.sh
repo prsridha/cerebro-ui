@@ -11,8 +11,9 @@ source ~/.bashrc
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
- # install aws cli
+# install aws cli
+apt install -y zip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+bash ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 aws configure
