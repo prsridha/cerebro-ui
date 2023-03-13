@@ -71,18 +71,17 @@ def add_s3_creds(s3_url):
         f.truncate()
 
     # delete existing policy versions for older S3s
-    cmd = """ aws iam delete-policy-version \
+    list_policy = "aws iam list-policy-versions --policy-arn {}".format(S3_POLICY_ARN)
+    delete_policy = """ aws iam delete-policy-version \
             --policy-arn {} \
             --version-id {}
     """
-    
-    for i in range(5, 1):
-        version = "v" + str(i)
-        try:
-            utilities.run(cmd.format(S3_POLICY_ARN, version))
-        except Exception as e:
-            print("GOT", e)
-    print("Deleted existing policy versions")
+    policies = json.loads(utilities.run(list_policy))
+    for i in policies["Versions"]:
+        ver = i["VersionId"]
+        if not i["IsDefaultVersion"]:
+            utilities.run(delete_policy.format(S3_POLICY_ARN, ver))
+            print("Deleted old policy version", ver)
 
     # create new policy version for new S3
     cmd = """ aws iam create-policy-version \
