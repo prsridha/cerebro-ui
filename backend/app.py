@@ -123,7 +123,9 @@ def saveParams():
 def saveCode():
     # save zip file
     filename = "code.zip"
+    print("OKAY 1")
     resp = saveFile(request, filename, ".")
+    print("OKAY 2")
     if resp["status"] != 200:
         return resp
 
