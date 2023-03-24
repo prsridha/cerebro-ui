@@ -123,16 +123,17 @@ def saveParams():
 def saveCode():
     # save zip file
     filename = "code.zip"
-    print("OKAY 1")
     resp = saveFile(request, filename, ".")
     print("OKAY 2")
     if resp["status"] != 200:
         return resp
-
+    print("OKAY 3")
     if "cli" in request.json:
         cli = request.json["cli"]
+        print("OKAY 4")
     else:
         cli = False
+        print("OKAY 5")
     
     # extract zip file contents
     filepath = os.path.join(utilities.ROOT_PATH, "code.zip")
@@ -144,7 +145,9 @@ def saveCode():
     cmd = "rm {}".format(os.path.join(utilities.ROOT_PATH, "code.zip"))
     utilities.run(cmd)
     
+    print("OKAY 6")
     copyFilesToPods(cli)
+    print("OKAY 7")
 
     resp = {
         "message": "Extracted and saved code zip file",
