@@ -25,8 +25,8 @@ if [ "$POD_TYPE" == "webapp_backend" ]; then
         pip install -r /webapp/cerebro-ui/requirements.txt
     fi
 
-    # (cd /webapp/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /webapp/cerebro-ui/backend/backend_logs.log)
-    sleep infinity
+    (cd /webapp/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /webapp/cerebro-ui/backend/backend_logs.log)
+    # sleep infinity
 elif [ "$POD_TYPE" == "webapp_ui" ]; then
     echo "
     export const environment = {
