@@ -34,7 +34,7 @@ export class CodeComponent {
     const formData = new FormData();
     this.loading = true;
     formData.append('file', this.selectedFile);
-    this.httpClient.post(baseURL + "/save-code", formData).subscribe((data:any) => {
+    this.httpClient.post(baseURL + "/save-code/ui", formData).subscribe((data:any) => {
         if (data.status == 200)
         {
           this.loading = false;

@@ -119,22 +119,17 @@ def saveParams():
     }
     return resp
 
-@app.route("/save-code", methods=["POST"])
-def saveCode():
+@app.route("/save-code/<route>", methods=["POST"])
+def saveCode(route):
     # save zip file
     filename = "code.zip"
     resp = saveFile(request, filename, ".")
-    print("OKAY 2")
     if resp["status"] != 200:
         return resp
-    print("OKAY 3")
-    print(request.json)
-    if "cli" in request.json:
-        cli = request.json["cli"]
-        print("OKAY 4")
-    else:
-        cli = False
-        print("OKAY 5")
+    
+    print("COOL TILL HERE")
+    cli = route == "cli"
+    print("GOT CLI", cli)
     
     # extract zip file contents
     filepath = os.path.join(utilities.ROOT_PATH, "code.zip")
