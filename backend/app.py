@@ -128,6 +128,7 @@ def saveCode():
     if resp["status"] != 200:
         return resp
     print("OKAY 3")
+    print(request.json)
     if "cli" in request.json:
         cli = request.json["cli"]
         print("OKAY 4")
