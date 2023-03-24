@@ -103,7 +103,6 @@ def initialize():
 
 @app.route("/params", methods=["POST"])
 def saveParams():
-    valuesYaml = utilities.readValuesYAML()
     params = request.json
     path = os.path.join(utilities.ROOT_PATH, "params.json")
     
@@ -127,9 +126,7 @@ def saveCode(route):
     if resp["status"] != 200:
         return resp
     
-    print("COOL TILL HERE")
     cli = route == "cli"
-    print("GOT CLI", cli)
     
     # extract zip file contents
     filepath = os.path.join(utilities.ROOT_PATH, "code.zip")
@@ -141,9 +138,7 @@ def saveCode(route):
     cmd = "rm {}".format(os.path.join(utilities.ROOT_PATH, "code.zip"))
     utilities.run(cmd)
     
-    print("OKAY 6")
     copyFilesToPods(cli)
-    print("OKAY 7")
 
     resp = {
         "message": "Extracted and saved code zip file",
