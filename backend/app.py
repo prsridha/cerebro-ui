@@ -38,6 +38,7 @@ def copyFilesToPods(cli):
     cmd2 = "kubectl cp -c {} {} {}:{}"
     cmd3 = "kubectl exec -t {} -c {} -- bash -c 'mv {}/code/* {}' "
     cmd4 = "kubectl exec -t {} -c {} -- bash -c 'rm -rf {}/code' "
+    cmd5 = "kubectl cp -c {} cerebro-controller-container CerebroExperiment.ipynb:{}"
 
     # remove existing files in codeToPath
     # controller
@@ -60,6 +61,8 @@ def copyFilesToPods(cli):
     for pod in etl_pods:
         utilities.run(cmd3.format(pod, "cerebro-worker-etl-container", codeToPath, codeToPath))
         utilities.run(cmd4.format(pod, "cerebro-worker-etl-container", codeToPath))
+    
+    utilities.run(cmd5.format(controller_pod, codeToPath))
 
 def add_s3_creds(s3_url):
     bucket_name = urlparse(s3_url, allow_fragments=False).netloc
