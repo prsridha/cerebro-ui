@@ -38,7 +38,7 @@ def copyFilesToPods(cli):
     cmd2 = "kubectl cp -c {} {} {}:{}"
     cmd3 = "kubectl exec -t {} -c {} -- bash -c 'mv {}/code/* {}' "
     cmd4 = "kubectl exec -t {} -c {} -- bash -c 'rm -rf {}/code' "
-    cmd5 = "kubectl cp -c {} cerebro-controller-container CerebroExperiment.ipynb:{}"
+    cmd5 = "kubectl cp -c cerebro-controller-container CerebroExperiment.ipynb {}:{}"
 
     # remove existing files in codeToPath
     # controller
