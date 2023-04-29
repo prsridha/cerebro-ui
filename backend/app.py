@@ -1,12 +1,10 @@
 import os
 import json
-import time
 import zipfile
 import utilities
 from pathlib import Path
 from urllib.parse import urlparse
 from flask import Flask, request
-from kubernetes import client, config
 from flask_cors import CORS
 
 S3_POLICY_ARN = "arn:aws:iam::782408612084:policy/AmazonEKS_S3_Policy"
@@ -33,7 +31,7 @@ def copyFilesToPods(cli):
     paramsToPath = valuesYaml["controller"]["volumes"]["dataMountPath"]
 
     p = utilities.getPodNames()
-    controller_pod, etl_pods, mop_pods = p["controller"], p["etl_workers"], p["mop_workers"]
+    controller_pod, etl_pods, _ = p["controller"], p["etl_workers"], p["mop_workers"]
     cmd1 = "kubectl exec -t {} -c {} -- bash -c 'rm -rf {}/*' "
     cmd2 = "kubectl cp -c {} {} {}:{}"
     cmd3 = "kubectl exec -t {} -c {} -- bash -c 'mv {}/code/* {}' "
