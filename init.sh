@@ -35,6 +35,6 @@ elif [ "$POD_TYPE" == "webapp_ui" ]; then
     " | tee /cerebro-repo/cerebro-ui/project-cerebro/src/environments/environment.ts /cerebro-repo/cerebro-ui/project-cerebro/src/environments/environment.development.ts
 
     (cd /cerebro-repo/cerebro-ui/project-cerebro && npm install)
-    (export NG_CLI_ANALYTICS="false" && cd /cerebro-repo/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
-    # sleep infinity
+    # (export NG_CLI_ANALYTICS="false" && cd /cerebro-repo/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
+    sleep infinity
 fi
