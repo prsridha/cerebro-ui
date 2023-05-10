@@ -25,8 +25,8 @@ if [ "$POD_TYPE" == "webapp_backend" ]; then
         pip install -r /data/cerebro-ui/requirements.txt
     fi
 
-    # (cd /data/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /data/cerebro-ui/backend/backend_logs.log)
-    sleep infinity
+    (cd /data/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /data/cerebro-ui/backend/backend_logs.log)
+    # sleep infinity
 elif [ "$POD_TYPE" == "webapp_ui" ]; then
     echo "
     export const environment = {
@@ -35,6 +35,6 @@ elif [ "$POD_TYPE" == "webapp_ui" ]; then
     " | tee /data/cerebro-ui/project-cerebro/src/environments/environment.ts /data/cerebro-ui/project-cerebro/src/environments/environment.development.ts
 
     (cd /data/cerebro-ui/project-cerebro && npm install)
-    # (export NG_CLI_ANALYTICS="false" && cd /data/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
-    sleep infinity
+    (export NG_CLI_ANALYTICS="false" && cd /data/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
+    # sleep infinity
 fi
