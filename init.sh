@@ -18,23 +18,23 @@ Host github.com
 
 if [ "$POD_TYPE" == "webapp_backend" ]; then
     # install webapp dependencies
-    source /cerebro-repo/cerebro-ui/backend/backend_init.sh
+    source /data/cerebro-ui/backend/backend_init.sh
 
     # install requirements
-    if [ -f /cerebro-repo/cerebro-ui/requirements.txt ]; then
-        pip install -r /cerebro-repo/cerebro-ui/requirements.txt
+    if [ -f /data/cerebro-ui/requirements.txt ]; then
+        pip install -r /data/cerebro-ui/requirements.txt
     fi
 
-    # (cd /cerebro-repo/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /cerebro-repo/cerebro-ui/backend/backend_logs.log)
+    # (cd /data/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /data/cerebro-ui/backend/backend_logs.log)
     sleep infinity
 elif [ "$POD_TYPE" == "webapp_ui" ]; then
     echo "
     export const environment = {
         backendURL: 'http://$BACKEND_HOST:30083'
     };
-    " | tee /cerebro-repo/cerebro-ui/project-cerebro/src/environments/environment.ts /cerebro-repo/cerebro-ui/project-cerebro/src/environments/environment.development.ts
+    " | tee /data/cerebro-ui/project-cerebro/src/environments/environment.ts /data/cerebro-ui/project-cerebro/src/environments/environment.development.ts
 
-    (cd /cerebro-repo/cerebro-ui/project-cerebro && npm install)
-    # (export NG_CLI_ANALYTICS="false" && cd /cerebro-repo/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
+    (cd /data/cerebro-ui/project-cerebro && npm install)
+    # (export NG_CLI_ANALYTICS="false" && cd /data/cerebro-ui/project-cerebro && ng serve --host 0.0.0.0 --port 80 --disable-host-check)
     sleep infinity
 fi
