@@ -12,6 +12,7 @@ S3_POLICY_ARN = "arn:aws:iam::782408612084:policy/AmazonEKS_S3_Policy"
 app = Flask(__name__)
 cors = CORS(app)
 
+
 def saveFile(request, filename, relativePath):
     # check if the post request has the file part
     file = request.files['file']
@@ -22,6 +23,7 @@ def saveFile(request, filename, relativePath):
         "status": 200
     }
     return resp
+
 
 def copyFilesToPods(cli):
     valuesYaml = utilities.readValuesYAML()
@@ -44,7 +46,7 @@ def copyFilesToPods(cli):
         utilities.run(cmd1.format(controller_pod, "cerebro-controller-container", codeToPath))
     for pod in etl_pods:
         utilities.run(cmd1.format(pod, "cerebro-worker-etl-container", codeToPath))
-    
+
     # copy to pods
     if not cli:
         utilities.run(cmd2.format("cerebro-controller-container", paramsFromPath, controller_pod, paramsToPath))
@@ -59,8 +61,9 @@ def copyFilesToPods(cli):
     for pod in etl_pods:
         utilities.run(cmd3.format(pod, "cerebro-worker-etl-container", codeToPath, codeToPath))
         utilities.run(cmd4.format(pod, "cerebro-worker-etl-container", codeToPath))
-    
+
     utilities.run(cmd5.format(controller_pod, codeToPath))
+
 
 def add_s3_creds(s3_url):
     bucket_name = urlparse(s3_url, allow_fragments=False).netloc
@@ -96,28 +99,31 @@ def add_s3_creds(s3_url):
     utilities.run(cmd)
     print("Created IAM read-only policy for S3")
 
+
 @app.route("/initialize", methods=["POST"])
 def initialize():
     filename = "values.yaml"
     resp = saveFile(request, filename, ".")
     return resp
 
+
 @app.route("/params", methods=["POST"])
 def saveParams():
     params = request.json
     path = os.path.join(utilities.ROOT_PATH, "params.json")
-    
+
     with open(path, "w") as f:
         json.dump(params, f, indent=2)
 
     s3_url = params["train"]["metadata_url"]
     add_s3_creds(s3_url)
-        
+
     resp = {
         "message": "Saved params json file",
         "status": 200
     }
     return resp
+
 
 @app.route("/save-code/<route>", methods=["POST"])
 def saveCode(route):
@@ -126,19 +132,19 @@ def saveCode(route):
     resp = saveFile(request, filename, ".")
     if resp["status"] != 200:
         return resp
-    
+
     cli = route == "cli"
-    
+
     # extract zip file contents
     filepath = os.path.join(utilities.ROOT_PATH, "code.zip")
     extractPath = os.path.join(utilities.ROOT_PATH, "code")
     Path(extractPath).mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(filepath, "r") as f:
         f.extractall(extractPath)
-    
+
     cmd = "rm {}".format(os.path.join(utilities.ROOT_PATH, "code.zip"))
     utilities.run(cmd)
-    
+
     copyFilesToPods(cli)
 
     resp = {
@@ -148,28 +154,29 @@ def saveCode(route):
 
     return resp
 
+
 @app.route("/get-urls", methods=["GET"])
 def getURLs():
     valuesYaml = utilities.readValuesYAML()
     publicDNS = valuesYaml["cluster"]["networking"]["publicDNSName"]
-    
+
     # get jupyter string
     j = valuesYaml["creds"]["jupyterTokenSting"]
     j_bin = j.encode("utf-8")
     jToken = j_bin.hex().upper()
-    
+
     jupyterP = valuesYaml["controller"]["services"]["jupyterNodePort"]
     tensorboardP = valuesYaml["controller"]["services"]["tensorboardNodePort"]
-    prometheusP = valuesYaml["cluster"]["networking"]["prometheusNodePort"]
-    lokiP = valuesYaml["cluster"]["networking"]["lokiPort"]
     grafanaP = valuesYaml["cluster"]["networking"]["grafanaNodePort"]
+    # prometheusP = valuesYaml["cluster"]["networking"]["prometheusNodePort"]
+    # lokiP = valuesYaml["cluster"]["networking"]["lokiPort"]
 
     jupyterURL = "http://" + publicDNS + ":" + str(jupyterP) + "/?token=" + jToken
     tensorboardURL = "http://" + publicDNS + ":" + str(tensorboardP)
-    prometheusURL = "http://" + publicDNS + ":" + str(prometheusP)
     grafanaURL = "http://" + publicDNS + ":" + str(grafanaP)
-    lokiURL = "http://loki" + ":" + str(lokiP)
-    
+    # prometheusURL = "http://" + publicDNS + ":" + str(prometheusP)
+    # lokiURL = "http://loki" + ":" + str(lokiP)
+
     message = {
         "jupyterURL": jupyterURL,
         "tensorboardURL": tensorboardURL,
@@ -177,11 +184,12 @@ def getURLs():
         "grafanaURL": grafanaURL,
         # "lokiURL": lokiURL
     }
-    
+
     return {
         "message": message,
         "status": 200
     }
+
 
 @app.route("/health", methods=["GET"])
 def hello_world():
@@ -190,6 +198,7 @@ def hello_world():
         "status": 200
     }
     return resp
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8083, debug=True)
