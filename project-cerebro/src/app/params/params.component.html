@@ -74,6 +74,9 @@
         </div>
     </div>
     <div class="footer">
+        <div class="spinner">
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </div>
         <span class="next-btn">
             <button mat-raised-button routerLink="/code" color="primary">Next</button>
         </span>

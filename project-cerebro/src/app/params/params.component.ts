@@ -33,7 +33,8 @@ const httpOptions = {
 })
 
 export class ParamsComponent {
-  params = <ParamsDict>{}
+  params = <ParamsDict>{};
+  loading = false;
   baseURL = environment.backendURL;
   constructor(
     private httpClient: HttpClient,
@@ -67,12 +68,15 @@ export class ParamsComponent {
     this.params.miscellaneous = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
     
     this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe((data: any) => {
+      this.loading = true;
       if (data.status == 200)
       {
+        this.loading = false;
         this.snackBar.open('Sent parameters to server!', 'Dismiss', {
           duration: 3000
         });
       } else {
+        this.loading = false;
         this.snackBar.open('Error occured', 'Dismiss', {
           duration: 3000
         });
