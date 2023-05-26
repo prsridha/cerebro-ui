@@ -16,18 +16,7 @@ Host github.com
     IdentitiesOnly yes
 " > $HOME/.ssh/config
 
-if [ "$POD_TYPE" == "webapp_backend" ]; then
-    # install webapp dependencies
-    source /data/cerebro-ui/backend/backend_init.sh
-
-    # install requirements
-    if [ -f /data/cerebro-ui/requirements.txt ]; then
-        pip install -r /data/cerebro-ui/requirements.txt
-    fi
-
-    (cd /data/cerebro-ui/backend && flask run --host=0.0.0.0 -p 8083  2>&1 |tee /data/cerebro-ui/backend/backend_logs.log)
-    # sleep infinity
-elif [ "$POD_TYPE" == "webapp_ui" ]; then
+if [ "$POD_TYPE" == "webapp_ui" ]; then
     echo "
     export const environment = {
         backendURL: 'http://$BACKEND_HOST:30083'
