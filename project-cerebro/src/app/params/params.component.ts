@@ -5,19 +5,13 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { environment } from '../../environments/environment';
 
 interface ParamsDict {
-  train: {
-    metadata_url: string,
-    multimedia_url: string
-  }
-  valid: {
-    metadata_url: string,
-    multimedia_url: string
-  }
-  test: {
-    metadata_url: string,
-    multimedia_url: string
-  }
-  miscellaneous: [string, string]
+  train_main: string,
+  train_dir: string,
+  val_main: string,
+  val_dir: string,
+  test_main: string,
+  test_dir: string,
+  misc: [string, string]
 }
 
 const httpOptions = {
@@ -53,19 +47,13 @@ export class ParamsComponent {
   });
 
   submitFn(){
-    this.params.train = {
-      metadata_url: this.paramsForm.value.train_metadata,
-      multimedia_url: this.paramsForm.value.train_multimedia
-    }
-    this.params.valid = {
-      metadata_url: this.paramsForm.value.valid_metadata,
-      multimedia_url: this.paramsForm.value.valid_multimedia
-    }
-    this.params.test = {
-      metadata_url: this.paramsForm.value.test_metadata,
-      multimedia_url: this.paramsForm.value.test_multimedia
-    }
-    this.params.miscellaneous = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
+    this.params.train_main = this.paramsForm.value.train_metadata
+    this.params.train_dir = this.paramsForm.value.train_multimedia
+    this.params.val_main = this.paramsForm.value.valid_metadata
+    this.params.val_dir = this.paramsForm.value.valid_multimedia
+    this.params.test_main =  this.paramsForm.value.test_metadata
+    this.params.test_dir = this.paramsForm.value.test_multimedia
+    this.params.misc = [this.paramsForm.value.misc_url1, this.paramsForm.value.misc_url2];
     
     this.httpClient.post(this.baseURL + "/params", this.params, httpOptions).subscribe((data: any) => {
       this.loading = true;
